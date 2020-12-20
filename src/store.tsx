@@ -40,7 +40,12 @@ export class Store {
 
     // calling this with "/r/sub_reddit" or "/u/reddit_user" will navigate to that sub
     navigateTo = (pathName: string) => {
-        this.history.push(pathName, {})
+        let publicUrl = process.env.PUBLIC_URL || '';
+        // remove trailing slash if it exists
+        if(publicUrl.endsWith('/')){
+            publicUrl = publicUrl.slice(0, -1);
+        }
+        this.history.push(publicUrl + pathName, {})
     }
 
     fetchNext = () => {
@@ -58,11 +63,11 @@ export class Store {
             } else {
                 url = `https://www.reddit.com/${this.redditType.get()}/${this.redditAsset.get()}/.json?limit=50${this.last ? `&after=${this.last}` : ''}`;
             }
-            console.log(url)
+            // console.log(url)
             const imageObj = objCopy(this.imageObj.get());
             let numPosts = 0;
             axios.get(url).then((message) => {
-                console.log(message.data)
+                // console.log(message.data)
                 if (message.data) {
                     this.last = message.data.data.after as string;
                     const children = message.data.data.children;
@@ -101,15 +106,6 @@ export class Store {
                 console.log(e)
             })
         } else {
-            console.log(
-                'Fetch doesnt have everything',
-                {
-                    isLoading: this.isLoading.get(),
-                    redditType: this.redditType.get(),
-                    redditAsset: this.redditAsset.get()
-                }
-            )
-            // try again in 500 ms
             wait(500).then(() => {
                 this.fetchNext();
             })
@@ -119,7 +115,9 @@ export class Store {
     // not used directly. Only called by listener
     private updateLocation = (pathName: string) => {
         console.log('location updated', pathName)
-        const locArr = pathName.split('/').filter(item => item !== '');
+        const publicUrl = process.env.PUBLIC_URL || '';
+        let cleanPathname = pathName.split(publicUrl).join('');
+        const locArr = cleanPathname.split('/').filter(item => item !== '');
         if (locArr.length === 2) {
             this.redditType.set(locArr[0]);
             this.redditAsset.set(locArr[1]);

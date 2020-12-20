@@ -7,7 +7,7 @@ import TopNav from './components/TopNav';
 import store from './store';
 import { useState as useHookState } from '@hookstate/core';
 
-
+console.log('publicUrl', process.env.PUBLIC_URL)
 
 export default () => {
 	const imageObj = useHookState(store.imageObj);
