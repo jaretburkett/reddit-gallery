@@ -7,11 +7,15 @@ import TopNav from './components/TopNav';
 import store from './store';
 import { useState as useHookState } from '@hookstate/core';
 
-console.log('publicUrl', process.env.PUBLIC_URL)
-
 export default () => {
 	const imageObj = useHookState(store.imageObj);
 	const size = useHookState(store.size);
+
+	let publicUrl = process.env.PUBLIC_URL || '';
+	// remove trailing slash if it exists
+	if (publicUrl.endsWith('/')) {
+		publicUrl = publicUrl.slice(0, -1);
+	}
 
 	let imgs = imageObj.get().map((img, index) => {
 		return (
@@ -23,7 +27,7 @@ export default () => {
 				<div className="info-bar">
 					<a href={`https://www.reddit.com/user/${img.author}/`} target="_blank" title={img.author}><FaUserCircle /></a>
 					<a href={img.post} target="_blank" title={img.title}><FaRedditAlien /></a>
-					<a href={`${window.location.origin}/user/${img.author}`} target="_blank" title="User images"><AiFillPicture /></a>
+					<a href={`${publicUrl}/user/${img.author}`} target="_blank" title="User images"><AiFillPicture /></a>
 				</div>
 			</div>
 		)
