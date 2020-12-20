@@ -1,0 +1,96 @@
+html, body{
+    background:#333;
+    color:#fff;
+    margin:0;
+    padding:0;
+}
+$info-bar-height:40px;
+.imgs {
+    background:#333;
+    text-align:center;
+    .img-cont{
+        display:inline-block;
+        width:300px;
+        height:300px;
+        position: relative;
+        background:#444;
+        margin:3px;
+        border-radius:5px;
+        overflow: hidden;
+        img{
+            position:absolute;
+            top:50%;
+            left:50%;
+            max-width:100%;
+            max-height:100%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+        .info-bar{
+            height:$info-bar-height;
+            // background:rgba(0,0,0,0.5);
+            position: absolute;
+            bottom:0;
+            left:0;
+            right:0;
+            a{
+                color:rgba(255, 255, 255, 0.5);
+                font-size:$info-bar-height - 6px;
+                padding:3px 5px;
+                line-height: $info-bar-height;
+                &:hover{
+                    color:rgba(255, 255, 255, 1);
+                }
+            }
+        }
+    }
+}
+.zoom-box{
+    position:fixed;
+    top:65px;
+    right:0;
+    .zoom-btn{
+        width:40px;
+        height:40px;
+        font-size:30px;
+        border-radius:50%;
+        margin:5px;
+        background:rgba(255, 255, 255, 0.5);
+        color:rgba(0, 0, 0, 0.5);
+        cursor:pointer;
+        text-align:center;
+        svg{
+            margin-top:5px;
+        }
+        &:hover{
+            background:rgba(255, 255, 255, 1);
+            color:rgba(0, 0, 0, 1);
+        }
+    }
+}
+
+.icon-spin {
+    -webkit-animation: icon-spin 2s infinite linear;
+            animation: icon-spin 2s infinite linear;
+  }
+  
+  @-webkit-keyframes icon-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
+    }
+  }
+  
+  @keyframes icon-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
+    }
+  }
