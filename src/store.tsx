@@ -3,6 +3,7 @@ import { IImageObj } from './interfaces';
 import { createState } from '@hookstate/core';
 import { objCopy, nextFrame, wait } from './utils';
 import axios from 'axios';
+import {v4 as uuid} from 'uuid';
 
 const imgUrl = (url: string) => {
     return url.replace(/&amp;/g, '&')
@@ -81,10 +82,12 @@ export class Store {
                                 const fullSize = imgUrl(images[i].source.url);
                                 if (!(this.shownImgUrls.includes(fullSize))) {
                                     const imgObj: IImageObj = {
+                                        id: uuid(),
                                         author: author,
                                         image: fullSize,
                                         title: title,
-                                        post: `https://www.reddit.com${post.permalink}`
+                                        post: `https://www.reddit.com${post.permalink}`,
+                                        isFocused: false
                                     };
                                     imageObj.push(imgObj)
                                     this.shownImgUrls.push(fullSize)

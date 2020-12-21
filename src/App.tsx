@@ -6,6 +6,7 @@ import { AiOutlineLoading, AiFillPicture, AiOutlineZoomIn, AiOutlineZoomOut } fr
 import TopNav from './components/TopNav';
 import store from './store';
 import { useState as useHookState } from '@hookstate/core';
+import { objCopy } from './utils';
 
 export default () => {
 	const imageObj = useHookState(store.imageObj);
@@ -18,18 +19,56 @@ export default () => {
 	}
 
 	let imgs = imageObj.get().map((img, index) => {
+		const clicked = () => {
+			const newImgObj = objCopy(imageObj.get());
+			// find this image and set it to focused
+			for (let i = 0; i < newImgObj.length; i++) {
+				if (newImgObj[i].id === img.id) {
+					newImgObj[i].isFocused = !newImgObj[i].isFocused;
+					break;
+				}
+			}
+			imageObj.set(newImgObj);
+		}
 		return (
-			<div className="img-cont" key={index} style={{
-				height: size.get(),
-				width: size.get()
-			}}>
-				<img src={img.image} />
-				<div className="info-bar">
-					<a href={`https://www.reddit.com/user/${img.author}/`} target="_blank" title={img.author}><FaUserCircle /></a>
-					<a href={img.post} target="_blank" title={img.title}><FaRedditAlien /></a>
-					<a href={`${publicUrl}/user/${img.author}`} target="_blank" title="User images"><AiFillPicture /></a>
+			<>
+				<div className="img-cont"
+					key={`img-${index}`}
+					style={{
+						height: size.get(),
+						width: size.get()
+					}}
+					onClick={clicked}
+				>
+					<img src={img.image} />
+					<div className="info-bar">
+						<a href={`https://www.reddit.com/user/${img.author}/`} target="_blank" title={img.author}><FaUserCircle /></a>
+						<a href={img.post} target="_blank" title={img.title}><FaRedditAlien /></a>
+						<a href={`${publicUrl}/user/${img.author}`} target="_blank" title="User images"><AiFillPicture /></a>
+					</div>
 				</div>
-			</div>
+				{
+					img.isFocused ?
+						<div className="img-cont focused"
+							key={`img-${index}_preview`}
+							style={{
+								height: 'auto',
+								width: 'auto'
+							}}
+							onClick={clicked}
+						>
+							<img src={img.image} />
+							<div className="info-bar">
+								<a href={`https://www.reddit.com/user/${img.author}/`} target="_blank" title={img.author}><FaUserCircle /></a>
+								<a href={img.post} target="_blank" title={img.title}><FaRedditAlien /></a>
+								<a href={`${publicUrl}/user/${img.author}`} target="_blank" title="User images"><AiFillPicture /></a>
+							</div>
+						</div>
+						:
+						null
+
+				}
+			</>
 		)
 	});
 	return (

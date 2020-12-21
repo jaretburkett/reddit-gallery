@@ -6,10 +6,12 @@ export interface IProps {
 }
 
 export interface IImageObj {
+    id: string,
 	author: string,
 	title: string,
 	image: string,
-	post: string
+    post: string,
+    isFocused: boolean
 }
 
 // return from https://www.reddit.com/reddits.json?limit=100
